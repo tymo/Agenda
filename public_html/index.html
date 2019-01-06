@@ -1,0 +1,24 @@
+<html ng-app="todoList">
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <title>Agenda</title>
+        <link rel="stylesheet" type="text/css" href="css/ui.css"><link rel="stylesheet" type="text/css" href="lib/bootstrap/bootstrap.css">        
+        <link rel="stylesheet" type="text/css" href="lib/bootstrap/bootstrap.css">
+        <script src="lib/angular/angular.js"></script>
+        <script src="lib/moment/moment.js"></script>
+        
+        <script src="js/controller/todoListCtrl.js"></script>
+        <script src="js/directives/todoItem.js"></script>
+        <script src="js/directives/itemInput.js"></script>        
+        <script src="js/directives/todoList.js"></script>
+        <script src="js/directives/uiDateDirective.js"></script>        
+    </head>
+    <body ng-controller="todoListCtrl">
+        <div class="jumbotron">
+            <h3>{{app}}</h3>
+            <item-Input event-bus="eventBus"></item-input>
+            <todo-List event-bus="eventBus" type="pendente"></todo-list>            
+        </div>
+    </body>
+</html>

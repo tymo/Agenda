@@ -1,0 +1,54 @@
+.removeButton {
+    background-color: blueviolet;
+    width: 35PX;
+    height: 35px;
+}
+
+.removeButton:hover {
+    background-color: red;
+}
+
+.buttonRemoveAll {
+    background-color: darkblue;
+    display: inline;
+    float: right;    
+}
+
+.urgent {
+    background-color: red;
+}
+
+.warn {
+    background-color: yellow;
+}
+
+.fine {
+    background-color: green;
+}
+
+.table {
+    width: 500px;
+    margin-top: 20px;
+}
+
+.textnput {
+    font-size: 18px;
+}
+
+.selecionada {
+    background-color: lightskyblue;
+}
+
+.negrito {
+    font-weight: bold;
+}
+
+.addButton {
+    display: inline-block;
+    font-size: 18px;  
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    color: white;
+    background-color: blue;
+}
