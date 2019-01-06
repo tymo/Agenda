@@ -3,8 +3,8 @@ angular.module("todoList").directive('todoList', function () {
         scope: {eventBus: "="},
         link: link,
         template: '<table class="table">\
-                <tr><th  ng-class="\'selecionada\'" colspan="7">{{currentYear}}({{daysinmonth}})</th>\
-                <tr><th  ng-class="\'selecionada\'" colspan="7">{{currentMonth}}</th>\
+                <tr><th  ng-class="\'selecionada\'" colspan="7">{{currentYear}}</th>\
+                <tr><th  ng-class="\'selecionada\'" colspan="7">{{currentMonth}}({{weeksinmonth}})({{daysinmonth}})</th>\
                 <th ng-class="\'selecionada\'" colspan="7"></th></tr>\
                 <tr><th>Dom</th><th>Seg</th><th>Ter</th><th>Qua</th><th>Qui</th><th>Sex</th><th>Sab</th></tr>\
                  <tr class="tr-todo-item" todo-Item event-bus="eventBus" tarefa="tarefa" store="store" \
@@ -34,7 +34,7 @@ angular.module("todoList").directive('todoList', function () {
             }
         }
 
-        const currentMonths = ["Janeiro", "Fevereiro", "MArço", "Abril", "Maio", "Junho",
+        const monthNames = ["Janeiro", "Fevereiro", "MArço", "Abril", "Maio", "Junho",
             "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
         ];
 
@@ -52,81 +52,25 @@ angular.module("todoList").directive('todoList', function () {
         scope.store = new Store();
 
         let date = moment();
+        scope.month = date.month();
         scope.currentYear = date.year();
         scope.daysinmonth = date.daysInMonth();
-        scope.currentMonth = currentMonths[date.month()];
-        scope.adicionarTarefa = function (tarefa) {
-            if ((scope.type === "pendente") && (!tarefa.selecionada)) { //adicionando em pendentes
-                if (!tarefa.horaFim) {
-                    tarefa.horaAdd = (tarefa.horaAdd ? tarefa.horaAdd : new Date());
-                    tarefa.selecionada = false;
-                    scope.store.get('itens').push(angular.copy(tarefa));
-                }
-            } else if ((scope.type === "concluida") && (tarefa.selecionada)) { //adicionando em concluidas
-                if (tarefa.horaFim) {
-                    scope.store.get('itens').push(angular.copy(tarefa));
-                }
+        scope.currentMonth = monthNames[scope.month];
+        var dayCell = "";
+        var monthGrid = "";
+        for (var idx = 1; idx <= scope.daysinmonth; idx++) {
+            let day = moment().year(scope.currentYear).month(scope.month).date(idx);
+            if (day.day() == 0) {
+                dayCell = "<tr><td>" + day.date() + "</td>";
+            } else if (day.day() == 6) {
+                dayCell = "<td>" + day.date() + "</td></tr>";
+            } else {
+                dayCell = "<td>" + day.date() + "</td>";
             }
-        };
-
-        scope.store.subscribe("set-todo-item-color", function (tarefaSel) {
-            if (scope.type === "concluida" && tarefaSel) {
-                var idx = ($(scope.element).find('.tr-todo-item').length - 1);
-                if (idx >= 0) {
-                    $($(scope.element).find('.tr-todo-item')[idx]).addClass('selecionada');
-                    $($(scope.element).find('.tr-todo-item')[idx]).addClass('negrito');
-                }
-            }
-        });
-        scope.selecionarTarefa = function (tarefa) {
-            if (tarefa) {
-                if (scope.type === "concluida") {
-                    tarefa.horaFim = new Date();
-                } else {
-                    tarefa.horaFim = null;
-                }
-                scope.eventBus.fireEvent("adicionarTarefa", angular.copy(tarefa));
-                scope.eventBus.fireEvent("apagarTarefaSel", tarefa);
-//                scope.$$postDigest(function () {
-                if (scope.type === "concluida") {
-                    setTimeout(function () {
-                        scope.store.set("set-todo-item-color", tarefa.selecionada);
-                    }, 500, false);
-//                });
-                }
-            }
-        };
-        scope.confirmaApagarTarefa = function (tarefa) {
-            if (scope.store.get('itens').includes(tarefa)) {
-                if (confirm("Deseja excluir \'" + tarefa.descricao + "\'?")) {
-                    delete scope.store.get('itens').splice(scope.store.get('itens').indexOf(tarefa), 1)
-                    ;
-                }
-            }
-        };
-
-        scope.apagarTarefaSel = function (tarefa) {
-            if ((scope.type === "pendente") && (tarefa.selecionada)) { // removendo de pendentes
-                if (scope.store.get('itens').includes(tarefa)) {
-                    delete scope.store.get('itens').splice(scope.store.get('itens').indexOf(tarefa), 1)
-                    ;
-                }
-            } else if ((scope.type === "concluida") && (!tarefa.selecionada)) { // removnedo de concluidas
-                if (scope.store.get('itens').includes(tarefa)) {
-                    delete scope.store.get('itens').splice(scope.store.get('itens').indexOf(tarefa), 1)
-                    ;
-                }
-            }
-        };
-
-        scope.apagarTerefasConcluidas = function () {
-            if (confirm("Deseja excluir todas as terefas concluidas?")) {
-                scope.store.set('itens', scope.store.get('itens').filter(function (tarefa) {
-                    if (!tarefa.selecionada)
-                        return tarefa;
-                }));
-            }
-        };
+            monthGrid += dayCell;
+        }
+        angular.element(element).find("table").append(monthGrid);
+        $compile(element.contents())(scope);
 
         scope.store.set("itens", []);
         scope.eventBus.addListener("adicionarTarefa", scope.adicionarTarefa);
