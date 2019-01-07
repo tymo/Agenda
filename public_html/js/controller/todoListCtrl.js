@@ -1,6 +1,6 @@
 angular.module("todoList", []);
 angular.module("todoList").controller("todoListCtrl", function ($scope) {
-    $scope.app = "To-Do List";
+    $scope.app = "Agenda";
 //    $scope.tarefasPen = [];
 //    $scope.tarefasCon = [];
     $scope.listeners = {};

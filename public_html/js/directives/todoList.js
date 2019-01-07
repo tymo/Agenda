@@ -1,4 +1,4 @@
-angular.module("todoList").directive('todoList', function () {
+angular.module("todoList").directive('todoList', function ($compile) {
     return {
         scope: {eventBus: "="},
         link: link,
