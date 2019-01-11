@@ -1,23 +1,19 @@
-angular.module("todoList").directive('todoItem', function () {
+angular.module("agenda").directive('todoItem', function () {
     return {
-        scope: {eventBus: "=", tarefa: "=", store: "="},
+        scope: {eventBus: "=", event: "=", store: "="},
         link: link,
         template:
-                '<td><input type="checkbox" ng-model="tarefa.selecionada" ng-click="selecionarTarefa(tarefa)"/></td>\
-        <td>{{tarefa.descricao}}</td>\
-        <td>{{tarefa.horaAdd| date:\'dd/MMM - HH:mm:ss\'}}</td>\
-        <td id="td-data-prv">{{tarefa.dataprv| date:\'dd/MM/yyyy\'}}</td>\
-        <td>{{tarefa.horaFim| date:\'dd/MMM - HH:mm:ss\'}}</td>\
-        <td><button class="removeButton" ng-click="apagarTarefa(tarefa)">X</button></td>\
-        <td><div style="width: 20px; height: 20px;"></div></td>'
+       '<td>{{event.description}}</td>\
+        <td>{{event.hour| date:\'HH:mm\'}}</td>\
+        <td><button class="removeButton" ng-click="removeEvent(event)">X</button></td>'
     };
 
     function link(scope, element) {
-        scope.getColorByDate = function (tarefaData) {
-            if (!tarefaData) {
+        scope.getColorByDate = function (eventData) {
+            if (!eventData) {
                 return 'selecionada';
             }
-            var t = (tarefaData - new Date()) / 1000 / 60 / 60 / 24;
+            var t = (eventData - new Date()) / 1000 / 60 / 60 / 24;
             if (t <= 2) {
                 return 'urgent';
             }
@@ -29,29 +25,16 @@ angular.module("todoList").directive('todoItem', function () {
             }
         };
         scope.element = element;
-        scope.store.subscribe("set-data-prv-color", function (tarefaDataPrv) {
+        scope.store.subscribe("set-data-prv-color", function (eventDataPrv) {
             var idx = ($(scope.element).find('#td-data-prv').length - 1);
-            $($(scope.element).find('#td-data-prv')[idx]).toggleClass(scope.getColorByDate(tarefaDataPrv));
+            $($(scope.element).find('#td-data-prv')[idx]).toggleClass(scope.getColorByDate(eventDataPrv));
         });
-        if (!scope.tarefa.selecionada) {
-            scope.store.set("set-data-prv-color", scope.tarefa.dataprv);
+        if (!scope.event.selecionada) {
+            scope.store.set("set-data-prv-color", scope.event.hour);
         }
-
-        // utilizar o método set,
-        //  para alterar as informações 
-        //  que interagem com a tela
-        // utilizar o método subscribe,
-        //  adicionando uma function 
-        //  com o que deve ocorrer
-        //  quando a variavel for alterada
-        //  remover todos os ng-class e ng-style
-        //  alterar a tela somente através do store
-
-        scope.selecionarTarefa = function (tarefa) {
-            scope.eventBus.fireEvent("selecionarTarefa", tarefa);
-        };
-        scope.apagarTarefa = function (tarefa) {
-            scope.eventBus.fireEvent("confirmaApagarTarefa", tarefa);
+        
+        scope.removeEvent = function (event) {
+            scope.eventBus.fireEvent("removeEvent", event);
         };
     }
 });

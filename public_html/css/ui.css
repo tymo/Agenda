@@ -8,12 +8,6 @@
     background-color: red;
 }
 
-.buttonRemoveAll {
-    background-color: darkblue;
-    display: inline;
-    float: right;    
-}
-
 .urgent {
     background-color: red;
 }
@@ -26,17 +20,51 @@
     background-color: green;
 }
 
-.table {
-    width: 500px;
-    margin-top: 20px;
+.tableAgenda {
+    border: solid 1px;
+}
+
+.tableHeader {
+    font-size: 20px;
+    border: solid 1px;
+    text-align: center;    
+    background-color: lightskyblue;
+}
+
+.tableArrow {
+    font-size: 20px;
+    text-align: center;
+    cursor: pointer;
+    border: solid 1px;
+    background-color: blue;
+}
+
+td {
+    border: solid 1px;
+    width: 40px;
+    height: 40px;
+}
+
+.cellIgnored {
+    background-color: white;    
+}
+
+.cellSelected {
+    background-color: yellow;
+}
+
+.cellNoEvent {
+    background-color: white;
+    cursor: pointer;   
+}
+
+.cellHasEvent {
+    background-color: blue;
+    cursor: pointer;    
 }
 
 .textnput {
     font-size: 18px;
-}
-
-.selecionada {
-    background-color: lightskyblue;
 }
 
 .negrito {

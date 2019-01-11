@@ -1,4 +1,4 @@
-angular.module("todoList").directive("uiDate", function ($filter) {
+angular.module("agenda").directive("uiDate", function ($filter) {
     return {
         require: "ngModel",
         link: function (scope, element, attrs, ctrl) {
