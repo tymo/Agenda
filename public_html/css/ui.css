@@ -51,6 +51,7 @@ td {
 
 .cellSelected {
     background-color: yellow;
+    cursor: default;
 }
 
 .cellNoEvent {

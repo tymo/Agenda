@@ -7,13 +7,13 @@ angular.module("agenda").directive('itemInput', function ($compile) {
                 '<form name="eventForm">\
         <button class="addButton" name="sendButton" ng-click="addEvent(event)">Adicionar</button>\
         </form>\
-        <div ng-show="diaNaoSelecionado" class="alert alert-danger">\
+        <div ng-show="dayNotSelected" class="alert alert-danger">\
           Por favor, primeiro selecione um dia do mês.!\
         </div>\
-        <div ng-show="dscricaoNa9Informada" class="alert alert-danger">\
+        <div ng-show="descriptionIsBlank" class="alert alert-danger">\
           Por favor, preencha o campo descrição!\
         </div>\
-        <div ng-show="horaNaoInformada" class="alert alert-danger">\
+        <div ng-show="hourIsBlank" class="alert alert-danger">\
           Por favor, preencha o campo hora!\
         </div>'
     };
@@ -39,17 +39,17 @@ angular.module("agenda").directive('itemInput', function ($compile) {
         $compile(element.contents())(scope);
         scope.setDayOfMonth = function (dayOfMonth) {
             scope.dayOfMonth = angular.copy(dayOfMonth);
-            scope.diaNaoSelecionado = !scope.dayOfMonth;
+            scope.dayNotSelected = !scope.dayOfMonth;
             delete dayOfMonth;
         }
         scope.addEvent = function (event) {
-            scope.diaNaoSelecionado = !scope.dayOfMonth;
+            scope.dayNotSelected = !scope.dayOfMonth;
             if (event) {
-                scope.dscricaoNaoInformada = !event.description;
-                scope.horaNaoInformada = !event.hour;
-                if (!scope.horaNaoInformada) {
+                scope.descriptionIsBlank = !event.description;
+                scope.hourIsBlank = !event.hour;
+                if (!scope.hourIsBlank) {
                     if (event.description && event.hour) {
-                        scope.eventBus.fireEvent('addEvent', [scope.dayOfMonth, angular.copy(event)]);
+                        scope.eventBus.fireEvent("addEvent", [scope.dayOfMonth, angular.copy(event)]);
                     }
                     delete scope.event;
                 }

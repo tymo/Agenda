@@ -37,11 +37,12 @@ angular.module("agenda").directive('todoList', function () {
                 this.listeners[property] = func;
             }
         }
-
+        var currentDate = null;
         scope.element = element;
         scope.store = new Store();
         scope.insertEvent = function (event) {
 //            if (!scope.store.get('agendaEvents').includes(event)) {
+            //evemt.currentDate = currentDate;
             scope.store.get('agendaEvents').push(angular.copy(event));
             delete event;
 //            }
@@ -66,6 +67,9 @@ angular.module("agenda").directive('todoList', function () {
             }
             return false
         };
+        scope.setCurrentDate = function (newDate) {
+            currentDate = angular.copy(newDate);
+        }
         scope.store.set("agendaEvents", []);
         scope.eventBus.addListener("insertEvent", scope.insertEvent);
         scope.eventBus.addListener("deleteEvent", scope.deleteEvent);
