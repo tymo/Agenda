@@ -40,7 +40,7 @@ angular.module("agenda").directive('agenda', function ($compile) {
 
         scope.getCellLayoutByIndex = function (dayOfWeekIdx, dayOfMonth) {
             dayClass = (dayOfMonth === "") ? "cellIgnored" : "cellNoEvent";
-            dayCell = '<day-cell event-bus="eventBus" day-index="' + dayOfWeekIdx + '" day-of-month="' + dayOfMonth  + '" ng-click="dayClick(' + dayOfMonth + ')" class="' + dayClass + '"></day-cell>';
+            dayCell = '<day-cell event-bus="eventBus" day-index="' + dayOfWeekIdx + '" day-of-month="' + dayOfMonth + '" date-of-day="' + moment().year(scope.currentYear).month(scope.monthNumber).date(dayOfMonth) + '" ng-click="dayClick(' + dayOfMonth + ')" class="' + dayClass + '"></day-cell>';
             if (dayOfWeekIdx === SUNDAY) {
                 return '<tr><td>' + dayCell + '</td>';
             } else if (dayOfWeekIdx === SATURDAY) {
@@ -102,7 +102,7 @@ angular.module("agenda").directive('agenda', function ($compile) {
         }
         scope.dayClick = function (dayOfMonth) {
             scope.eventBus.fireEvent("setDayOfMonth", angular.copy(dayOfMonth));
-            //scope.eventBus.fireEvent("setCurrentDate", angular.copy(scope.date.year(scope.currentYear).month(scope.monthNumber).date(dayOfMonth)));
+            scope.eventBus.fireEvent("setDateOfDay", angular.copy(moment().year(scope.currentYear).month(scope.monthNumber).date(dayOfMonth)));
             scope.selectCell(dayOfMonth);
         }
 
@@ -128,7 +128,7 @@ angular.module("agenda").directive('agenda', function ($compile) {
             $(scope.element.find("td")[(dayOfMonth + emptyCellCount - 1)]).addClass('cellNoEvent');
         }
 
-        scope.nextMonth = function () {            
+        scope.nextMonth = function () {
             scope.createMonth(scope.date.add(1, 'M'));
         }
 

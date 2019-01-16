@@ -1,6 +1,6 @@
 angular.module("agenda").directive('dayCell', function ($compile) {
     return {
-        scope: {eventBus: "=", dayOfMonth: "="},
+        scope: {eventBus: "=", dayOfMonth: "=", dateOfDay: "="},
         link: link,
         template: '{{dayOfMonth}}'
     };
@@ -8,7 +8,8 @@ angular.module("agenda").directive('dayCell', function ($compile) {
     var lastSelectedDay = null;
     function link(scope, element) {
         const DAYOFMONTH = 0;
-        const EVENT = 1;
+        const DATEOFDAY = 1;
+        const EVENT = 2;
         scope.element = element;
         scope.highLightDay = function (dayOfMonth) {
             if (scope.dayOfMonth === dayOfMonth) {
@@ -42,7 +43,8 @@ angular.module("agenda").directive('dayCell', function ($compile) {
         }
         scope.addEvent = function (params) {
             if (scope.dayOfMonth === params[DAYOFMONTH] && params[EVENT]) {
-                params[EVENT].dayOfMonth = params[DAYOFMONTH];                
+                params[EVENT].dateOfDay = params[DATEOFDAY];
+                params[EVENT].dayOfMonth = params[DAYOFMONTH];
                 scope.eventBus.fireEvent("insertEvent", angular.copy(params[EVENT]));
                 eventCount++;
                 if (eventCount === 1) {
@@ -52,7 +54,7 @@ angular.module("agenda").directive('dayCell', function ($compile) {
             }
         }
         scope.removeEvent = function (event) {
-            if (event && scope.dayOfMonth === event.dayOfMonth) {
+            if (event && scope.dateOfDay === event.dateOfDay) {
                 scope.eventBus.fireEvent("deleteEvent", event);
                 eventCount--;
                 if (eventCount === 0) {
@@ -66,7 +68,6 @@ angular.module("agenda").directive('dayCell', function ($compile) {
         scope.eventBus.addListener("removeEvent", scope.removeEvent);
         scope.eventBus.addListener("selectDay", scope.selectDay);
         scope.eventBus.addListener("unselectDay", scope.unselectDay);
-        scope.eventBus.addListener("setCurrentDate", scope.setCurrentDate);
         $compile(element.contents())(scope);
     }
 });

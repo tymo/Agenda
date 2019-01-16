@@ -1,18 +1,15 @@
 angular.module("agenda").directive('todoList', function () {
-    //'<div ng-show="store.get(\'agendaEvents\').length > 0">\
-    //'<div ng-show="{{dayHasEvents(dayOfMonth)}}">\
     return {
         scope: {eventBus: "=", dayOfMonth: "@"},
         link: link,
         template:
-                //'<div ng-show="store.get(\'agendaEvents\').length > 0">\
-                '<div ng-show="dayHasEvents(dayOfMonth)">\
+                '<div ng-show="dayHasEvents(dateOfDay)">\
                 <table class="table">\
                 <tr><th  ng-class="\'selecionada\'"`>{{Title}}</th>\
                 <th ng-class="\'selecionada\'" colspan="6"></th></tr>\
                 <tr><th>Descrição</th><th>Hora</th><th>Excluir</th></tr>\
                  <tr class="tr-todo-item" todo-Item event-bus="eventBus" event="event" store="store" \
-                 ng-repeat="event in store.get(\'agendaEvents\') | filter: { dayOfMonth: dayOfMonth}"></tr></table>'
+                 ng-repeat="event in store.get(\'agendaEvents\') | filter: { dateOfDay: dateOfDay}"></tr></table>'
     };
     function link(scope, element) {
         class Store {
@@ -37,15 +34,12 @@ angular.module("agenda").directive('todoList', function () {
                 this.listeners[property] = func;
             }
         }
-        var currentDate = null;
+
         scope.element = element;
         scope.store = new Store();
         scope.insertEvent = function (event) {
-//            if (!scope.store.get('agendaEvents').includes(event)) {
-            //evemt.currentDate = currentDate;
             scope.store.get('agendaEvents').push(angular.copy(event));
             delete event;
-//            }
         }
         scope.deleteEvent = function (event) {
             if (scope.store.get('agendaEvents').includes(event)) {
@@ -59,23 +53,24 @@ angular.module("agenda").directive('todoList', function () {
             scope.Title = "Eventos do dia " + newDay;
             delete newDay;
         }
-        scope.dayHasEvents = function (dayOfMonth) {
-            if (dayOfMonth) {
+        scope.setDateOfDay = function (selDate) {
+            scope.dateOfDay = angular.copy(selDate);
+        }
+        scope.dayHasEvents = function (dateOfDay) {
+            if (dateOfDay) {
                 return ((scope.store.get('agendaEvents').filter(function (event) {
-                    return event.dayOfMonth === dayOfMonth;
+                    return event.dateOfDay === dateOfDay.format('DDMMYYYY');
                 })).length > 0);
             }
             return false
         };
-        scope.setCurrentDate = function (newDate) {
-            currentDate = angular.copy(newDate);
-        }
         scope.store.set("agendaEvents", []);
         scope.eventBus.addListener("insertEvent", scope.insertEvent);
         scope.eventBus.addListener("deleteEvent", scope.deleteEvent);
         scope.eventBus.addListener("setDayOfMonth", scope.setDayOfMonth);
-    }
-    ;
+        scope.eventBus.addListener("setDateOfDay", scope.setDateOfDay);
+        
+    };
 }
 
 );

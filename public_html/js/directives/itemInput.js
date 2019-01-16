@@ -42,6 +42,9 @@ angular.module("agenda").directive('itemInput', function ($compile) {
             scope.dayNotSelected = !scope.dayOfMonth;
             delete dayOfMonth;
         }
+        scope.setDateOfDay = function (selDate) {
+            scope.dateOfDay = angular.copy(selDate);
+        }
         scope.addEvent = function (event) {
             scope.dayNotSelected = !scope.dayOfMonth;
             if (event) {
@@ -49,12 +52,14 @@ angular.module("agenda").directive('itemInput', function ($compile) {
                 scope.hourIsBlank = !event.hour;
                 if (!scope.hourIsBlank) {
                     if (event.description && event.hour) {
-                        scope.eventBus.fireEvent("addEvent", [scope.dayOfMonth, angular.copy(event)]);
+                        scope.eventBus.fireEvent("addEvent", [scope.dayOfMonth, scope.dateOfDay.format('DDMMYYYY'), angular.copy(event)]);                        
                     }
                     delete scope.event;
                 }
             }
         };
         scope.eventBus.addListener("setDayOfMonth", scope.setDayOfMonth);
+        scope.eventBus.addListener("setDateOfDay", scope.setDateOfDay);
+        
     }
 });
