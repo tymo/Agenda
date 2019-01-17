@@ -38,12 +38,15 @@ angular.module("agenda").directive('todoList', function () {
         scope.element = element;
         scope.store = new Store();
         scope.insertEvent = function (event) {
-            scope.store.get('agendaEvents').push(angular.copy(event));
+            if (!scope.store.get('agendaEvents').includes(event)) {
+                scope.store.get('agendaEvents').push(angular.copy(event));
+            }
             delete event;
         }
         scope.deleteEvent = function (event) {
             if (scope.store.get('agendaEvents').includes(event)) {
-                delete scope.store.get('agendaEvents').splice(scope.store.get('agendaEvents').indexOf(event), 1);
+                delete scope.store.get('agendaEvents').splice(scope.store.get('agendaEvents').indexOf(event), 1)
+                ;
                 delete event;
             }
         }
@@ -68,8 +71,9 @@ angular.module("agenda").directive('todoList', function () {
         scope.eventBus.addListener("deleteEvent", scope.deleteEvent);
         scope.eventBus.addListener("setDayOfMonth", scope.setDayOfMonth);
         scope.eventBus.addListener("setDateOfDay", scope.setDateOfDay);
-        
-    };
+
+    }
+    ;
 }
 
 );

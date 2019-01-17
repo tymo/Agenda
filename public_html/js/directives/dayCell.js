@@ -41,6 +41,19 @@ angular.module("agenda").directive('dayCell', function ($compile) {
                 $($(scope.element)).addClass("cellNoEvent");
             }
         }
+        scope.setDateToDay = function (params) {
+            if (scope.dayOfMonth === params[DAYOFMONTH]) {
+                scope.dateOfDay = angular.copy(params[DATEOFDAY]);
+            }
+        }
+        scope.removeListener = function () {
+            scope.eventBus.removeListener("addEvent", scope.addEvent);
+            scope.eventBus.removeListener("removeEvent", scope.removeEvent);
+            scope.eventBus.removeListener("selectDay", scope.selectDay);
+            scope.eventBus.removeListener("unselectDay", scope.unselectDay);
+            scope.eventBus.removeListener("setDateToDay", scope.setDateToDay);
+            scope.eventBus.removeListener("removeListener", scope.removeListener);
+        }
         scope.addEvent = function (params) {
             if (scope.dayOfMonth === params[DAYOFMONTH] && params[EVENT]) {
                 params[EVENT].dateOfDay = angular.copy(params[DATEOFDAY]);
@@ -54,7 +67,7 @@ angular.module("agenda").directive('dayCell', function ($compile) {
             }
         }
         scope.removeEvent = function (event) {
-            if (event && scope.dateOfDay === event.dateOfDay) {
+            if (event && scope.dayOfMonth === event.dayOfMonth) {
                 scope.eventBus.fireEvent("deleteEvent", event);
                 eventCount--;
                 if (eventCount === 0) {
@@ -64,10 +77,13 @@ angular.module("agenda").directive('dayCell', function ($compile) {
             }
         }
         var eventCount = 0;
+
         scope.eventBus.addListener("addEvent", scope.addEvent);
         scope.eventBus.addListener("removeEvent", scope.removeEvent);
         scope.eventBus.addListener("selectDay", scope.selectDay);
         scope.eventBus.addListener("unselectDay", scope.unselectDay);
+        scope.eventBus.addListener("setDateToDay", scope.setDateToDay);
+        scope.eventBus.addListener("removeListener", scope.removeListener);
         $compile(element.contents())(scope);
     }
 });

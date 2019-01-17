@@ -51,9 +51,12 @@ angular.module("agenda").directive('agenda', function ($compile) {
         }
 
         scope.createMonth = function (newDate) {
+            if (lastSelectedCell != null) {
+                $(scope.element.find("td")[lastSelectedCell]).toggleClass('cellSelected');
+                lastSelectedCell = null;
+            }
             if (emptyCellCount != null) {
                 emptyCellCount = null;
-                lastSelectedCell = null;
             }
             scope.monthGrid = '<tr><th class="tableArrow" ng-click="prevMonth()">\<<</th><th class="tableHeader" colspan="5">{{currentMonth}}\/{{currentYear}}</th><th class="tableArrow" ng-click="nextMonth()">\>></th></tr>\
                 <tr><th class=\'tableHeader\'>Dom</th><th class=\'tableHeader\'>Seg</th><th class=\'tableHeader\'>Ter</th><th class=\'tableHeader\'>Qua</th><th \n\
@@ -80,6 +83,8 @@ angular.module("agenda").directive('agenda', function ($compile) {
                         emptyIndex++;
                     }
                     fixed = true;
+                } else {
+                    fixed = true;
                 }
                 newDayCell = scope.getCellLayoutByIndex(day.day(), day.date());
                 scope.monthGrid += newDayCell;
@@ -102,7 +107,9 @@ angular.module("agenda").directive('agenda', function ($compile) {
         }
         scope.dayClick = function (dayOfMonth) {
             scope.eventBus.fireEvent("setDayOfMonth", angular.copy(dayOfMonth));
-            scope.eventBus.fireEvent("setDateOfDay", angular.copy(moment().year(scope.currentYear).month(scope.monthNumber).date(dayOfMonth)));
+            newDate = angular.copy(moment().year(scope.currentYear).month(scope.monthNumber).date(dayOfMonth));
+            scope.eventBus.fireEvent("setDateOfDay", angular.copy(newDate));
+            scope.eventBus.fireEvent("setDateToDay", [angular.copy(dayOfMonth), angular.copy(newDate)]);
             scope.selectCell(dayOfMonth);
         }
 
@@ -129,18 +136,18 @@ angular.module("agenda").directive('agenda', function ($compile) {
         }
 
         scope.nextMonth = function () {
+            scope.eventBus.fireEvent("removeListener");
             scope.createMonth(scope.date.add(1, 'M'));
         }
 
         scope.prevMonth = function () {
+//            scope.eventBus.clearListeners();
+            scope.eventBus.fireEvent("removeListener");
             scope.createMonth(scope.date.subtract(1, 'M'));
         }
 
         scope.eventBus.addListener("highLightCell", scope.highLightCell);
         scope.eventBus.addListener("hideCell", scope.hideCell);
-//        monthTable = angular.element('<table class="tableAgenda">' + scope.monthGrid + '</table>');
-//        angular.element(element).append(monthTable);
-//        $compile(monthTable)(scope);
     }
 
 });

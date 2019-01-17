@@ -2,8 +2,7 @@ angular.module("agenda", []);
 angular.module("agenda").controller("agendaCtrl", function ($scope) {
     $scope.app = "Agenda";
     $scope.listeners = {};
-    const listeners = [];
-
+    var listeners = [];
     $scope.eventBus = {
         addListener: function (eventName, func) {
             // add listener on the list of listeners
@@ -11,7 +10,18 @@ angular.module("agenda").controller("agendaCtrl", function ($scope) {
                 name: eventName,
                 callback: func,
             }
-            listeners.push(listener);
+            if (!listeners.includes(listener)) {
+                listeners.push(listener);
+            }
+        },
+        removeListener(eventName, func) {
+            eventMatches = listeners.filter(function (listener) {
+                return listener.callback === func;
+            });
+            eventMatches.forEach(function (evt) {
+                delete listeners.splice(listeners.indexOf(evt), 1)
+                ;
+            });
         },
         fireEvent: function (eventName, param) {
             eventMatches = listeners.filter(function (listener) {
@@ -20,6 +30,6 @@ angular.module("agenda").controller("agendaCtrl", function ($scope) {
             eventMatches.forEach(function (evt) {
                 evt.callback.call(this, param);
             });
-        }
+        },
     }
 });
