@@ -66,12 +66,17 @@ angular.module("agenda").directive('todoList', function () {
             }
             return false
         };
+        scope.getEventList = function () {
+            if (scope.store.get('agendaEvents').length > 0) {
+                scope.eventBus.fireEvent("checkForEvents", scope.store.get('agendaEvents'));
+            }
+        };
         scope.store.set("agendaEvents", []);
         scope.eventBus.addListener("insertEvent", scope.insertEvent);
         scope.eventBus.addListener("deleteEvent", scope.deleteEvent);
         scope.eventBus.addListener("setDayOfMonth", scope.setDayOfMonth);
         scope.eventBus.addListener("setDateOfDay", scope.setDateOfDay);
-
+        scope.eventBus.addListener("getEventList", scope.getEventList);
     }
     ;
 }

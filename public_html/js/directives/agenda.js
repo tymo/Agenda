@@ -40,7 +40,7 @@ angular.module("agenda").directive('agenda', function ($compile) {
 
         scope.getCellLayoutByIndex = function (dayOfWeekIdx, dayOfMonth) {
             dayClass = (dayOfMonth === "") ? "cellIgnored" : "cellNoEvent";
-            dayCell = '<day-cell event-bus="eventBus" day-index="' + dayOfWeekIdx + '" day-of-month="' + dayOfMonth + '" date-of-day="' + moment().year(scope.currentYear).month(scope.monthNumber).date(dayOfMonth).format("DDMMYYYY") + '" ng-click="dayClick(' + dayOfMonth + ')" class="' + dayClass + '"></day-cell>';
+            dayCell = '<day-cell event-bus="eventBus" day-index="' + dayOfWeekIdx + '" day-of-month="' + dayOfMonth + '" date-of-day="' + moment().year(scope.currentYear).month(scope.monthIdx).date(dayOfMonth).format("DDMMYYYY") + '" ng-click="dayClick(' + dayOfMonth + ')" class="' + dayClass + '"></day-cell>';
             if (dayOfWeekIdx === SUNDAY) {
                 return '<tr><td>' + dayCell + '</td>';
             } else if (dayOfWeekIdx === SATURDAY) {
@@ -62,15 +62,15 @@ angular.module("agenda").directive('agenda', function ($compile) {
                 <tr><th class=\'tableHeader\'>Dom</th><th class=\'tableHeader\'>Seg</th><th class=\'tableHeader\'>Ter</th><th class=\'tableHeader\'>Qua</th><th \n\
                 class=\'tableHeader\'>Qui</th><th class=\'tableHeader\'>Sex</th><th class=\'tableHeader\'>Sab</th></tr>';
             scope.date = newDate;
-            scope.monthNumber = scope.date.month();
+            scope.monthIdx = scope.date.month();
             scope.currentYear = scope.date.year();
-            scope.currentMonth = monthNames[scope.monthNumber];
+            scope.currentMonth = monthNames[scope.monthIdx];
             scope.nmontSizeh = scope.date.daysInMonth();
             var newDayCell = "";
 
             let fixed = false;
             for (var dayIdx = 1; dayIdx <= scope.nmontSizeh; dayIdx++) {
-                let day = scope.date.year(scope.currentYear).month(scope.monthNumber).date(dayIdx);
+                let day = scope.date.year(scope.currentYear).month(scope.monthIdx).date(dayIdx);
                 if (day.day() > 0 && !fixed) {
                     if (!emptyCellCount) {
                         emptyCellCount = Math.abs(day.day());
@@ -97,6 +97,7 @@ angular.module("agenda").directive('agenda', function ($compile) {
                 angular.element(element).append(monthTable);
             }
             $compile(monthTable)(scope);
+            scope.eventBus.fireEvent("getEventList");
         }
 
         if (!scope.element) {
@@ -105,9 +106,21 @@ angular.module("agenda").directive('agenda', function ($compile) {
         if (!scope.store) {
             scope.store = new Store();
         }
+        scope.checkForEvents = function (eventList) {
+            for (var dayIdx = 1; dayIdx <= scope.nmontSizeh; dayIdx++) {
+                let day = moment().year(scope.currentYear).month(scope.monthIdx).date(dayIdx).format("DDMMYYYY");
+                if (day) {
+                    if (((eventList.filter(function (event) {
+                        return event.dateOfDay === day;
+                    })).length > 0)) {
+                        scope.highLightCell(day.date);
+                    }
+                }
+            }
+        }
         scope.dayClick = function (dayOfMonth) {
             scope.eventBus.fireEvent("setDayOfMonth", angular.copy(dayOfMonth));
-            newDate = angular.copy(moment().year(scope.currentYear).month(scope.monthNumber).date(dayOfMonth));
+            newDate = angular.copy(moment().year(scope.currentYear).month(scope.monthIdx).date(dayOfMonth));
             scope.eventBus.fireEvent("setDateOfDay", angular.copy(newDate));
             scope.eventBus.fireEvent("setDateToDay", [angular.copy(dayOfMonth), angular.copy(newDate)]);
             scope.selectCell(dayOfMonth);
@@ -141,13 +154,12 @@ angular.module("agenda").directive('agenda', function ($compile) {
         }
 
         scope.prevMonth = function () {
-//            scope.eventBus.clearListeners();
             scope.eventBus.fireEvent("removeListener");
             scope.createMonth(scope.date.subtract(1, 'M'));
         }
 
         scope.eventBus.addListener("highLightCell", scope.highLightCell);
         scope.eventBus.addListener("hideCell", scope.hideCell);
+        scope.eventBus.addListener("checkForEvents", scope.checkForEvents);
     }
-
 });
