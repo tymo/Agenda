@@ -43,7 +43,7 @@ angular.module("agenda").directive('itemInput', function ($compile) {
             delete dayOfMonth;
         }
         scope.setDateOfDay = function (selDate) {
-            scope.dateOfDay = angular.copy(selDate);
+            scope.dateOfDay = angular.copy(selDate.format("DDMMYYYY"));
         }
         scope.addEvent = function (event) {
             scope.dayNotSelected = !scope.dayOfMonth;
@@ -52,7 +52,7 @@ angular.module("agenda").directive('itemInput', function ($compile) {
                 scope.hourIsBlank = !event.hour;
                 if (!scope.hourIsBlank) {
                     if (event.description && event.hour) {
-                        scope.eventBus.fireEvent("addEvent", [scope.dayOfMonth, scope.dateOfDay.format('DDMMYYYY'), angular.copy(event)]);                        
+                        scope.eventBus.fireEvent("addEvent", [scope.dayOfMonth, scope.dateOfDay, angular.copy(event)]);                        
                     }
                     delete scope.event;
                 }

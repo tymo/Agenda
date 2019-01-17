@@ -43,8 +43,7 @@ angular.module("agenda").directive('todoList', function () {
         }
         scope.deleteEvent = function (event) {
             if (scope.store.get('agendaEvents').includes(event)) {
-                delete scope.store.get('agendaEvents').splice(scope.store.get('agendaEvents').indexOf(event), 1)
-                ;
+                delete scope.store.get('agendaEvents').splice(scope.store.get('agendaEvents').indexOf(event), 1);
                 delete event;
             }
         }
@@ -54,12 +53,12 @@ angular.module("agenda").directive('todoList', function () {
             delete newDay;
         }
         scope.setDateOfDay = function (selDate) {
-            scope.dateOfDay = angular.copy(selDate);
+            scope.dateOfDay = angular.copy(selDate.format("DDMMYYYY"));
         }
         scope.dayHasEvents = function (dateOfDay) {
             if (dateOfDay) {
                 return ((scope.store.get('agendaEvents').filter(function (event) {
-                    return event.dateOfDay === dateOfDay.format('DDMMYYYY');
+                    return event.dateOfDay === dateOfDay;
                 })).length > 0);
             }
             return false

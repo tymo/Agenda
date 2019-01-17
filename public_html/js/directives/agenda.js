@@ -40,7 +40,7 @@ angular.module("agenda").directive('agenda', function ($compile) {
 
         scope.getCellLayoutByIndex = function (dayOfWeekIdx, dayOfMonth) {
             dayClass = (dayOfMonth === "") ? "cellIgnored" : "cellNoEvent";
-            dayCell = '<day-cell event-bus="eventBus" day-index="' + dayOfWeekIdx + '" day-of-month="' + dayOfMonth + '" date-of-day="' + moment().year(scope.currentYear).month(scope.monthNumber).date(dayOfMonth) + '" ng-click="dayClick(' + dayOfMonth + ')" class="' + dayClass + '"></day-cell>';
+            dayCell = '<day-cell event-bus="eventBus" day-index="' + dayOfWeekIdx + '" day-of-month="' + dayOfMonth + '" date-of-day="' + moment().year(scope.currentYear).month(scope.monthNumber).date(dayOfMonth).format("DDMMYYYY") + '" ng-click="dayClick(' + dayOfMonth + ')" class="' + dayClass + '"></day-cell>';
             if (dayOfWeekIdx === SUNDAY) {
                 return '<tr><td>' + dayCell + '</td>';
             } else if (dayOfWeekIdx === SATURDAY) {
