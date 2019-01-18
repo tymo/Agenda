@@ -76,8 +76,7 @@ angular.module("agenda").directive('todoList', function () {
         scope.eventBus.addListener("setDayOfMonth", scope.setDayOfMonth);
         scope.eventBus.addListener("setDateOfDay", scope.setDateOfDay);
         scope.eventBus.addListener("getEventList", scope.getEventList);
-    }
-    ;
+    };
 }
 
 );
