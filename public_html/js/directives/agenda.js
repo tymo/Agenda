@@ -11,29 +11,7 @@ angular.module("agenda").directive('agenda', function ($compile) {
         const SUNDAY = 0;
         const SATURDAY = 6;
         scope.monthGrid = null;
-        class Store {
-            constructor() {
-                this.data = {};
-                this.listeners = {};
-            }
-            set(property, value) {
-                this.data[property] = value;
-                if (this.listeners[property]) {
-                    this.listeners[property](value);
-                }
-            }
-
-            get(property) {
-                if (this.data[property]) {
-                    return this.data[property];
-                }
-            }
-
-            subscribe(property, func) {
-                this.listeners[property] = func;
-            }
-        }
-
+        
         const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
             "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
         ];
@@ -102,9 +80,6 @@ angular.module("agenda").directive('agenda', function ($compile) {
 
         if (!scope.element) {
             scope.element = element;
-        }
-        if (!scope.store) {
-            scope.store = new Store();
         }
         scope.checkForEvents = function (eventList) {
             for (var dayIdx = 1; dayIdx <= scope.nmontSizeh; dayIdx++) {

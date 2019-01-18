@@ -52,11 +52,6 @@ td {
     height: 40px;
 }
 
-.selecionada {
-    border: solid 1px;
-    background-color: lightskyblue;
-}
-
 .cellIgnored {
     background-color: white;    
 }
