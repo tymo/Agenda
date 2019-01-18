@@ -10,12 +10,16 @@ angular.module("agenda").directive('dayCell', function ($compile) {
         const DAYOFMONTH = 0;
         const DATEOFDAY = 1;
         const EVENT = 2;
+        const EVENTCOUNT = 1;
         scope.element = element;
-        scope.highLightDay = function (dayOfMonth) {
-            if (scope.dayOfMonth === dayOfMonth) {
+        scope.highLightDay = function (params) {
+            if (scope.dayOfMonth === params[DAYOFMONTH]) {
                 $($(scope.element)).removeClass('cellSelected');
                 $($(scope.element)).addClass('cellHasEvent');
                 scope.eventBus.fireEvent("highLightCell", scope.dayOfMonth);
+                if (params[EVENTCOUNT]) {
+                    eventCount = params[EVENTCOUNT];
+                }
             }
         }
         scope.hideDay = function (dayOfMonth) {
@@ -53,6 +57,7 @@ angular.module("agenda").directive('dayCell', function ($compile) {
             scope.eventBus.removeListener("unselectDay", scope.unselectDay);
             scope.eventBus.removeListener("setDateToDay", scope.setDateToDay);
             scope.eventBus.removeListener("removeListener", scope.removeListener);
+            scope.eventBus.removeListener("highLightDay", scope.highLightDay);
         }
         scope.addEvent = function (params) {
             if (scope.dayOfMonth === params[DAYOFMONTH] && params[EVENT]) {
@@ -61,7 +66,7 @@ angular.module("agenda").directive('dayCell', function ($compile) {
                 scope.eventBus.fireEvent("insertEvent", angular.copy(params[EVENT]));
                 eventCount++;
                 if (eventCount === 1) {
-                    scope.highLightDay(angular.copy(params[DAYOFMONTH]));
+                    scope.highLightDay([angular.copy(params[DAYOFMONTH])]);
                 }
                 delete params;
             }
@@ -84,6 +89,7 @@ angular.module("agenda").directive('dayCell', function ($compile) {
         scope.eventBus.addListener("unselectDay", scope.unselectDay);
         scope.eventBus.addListener("setDateToDay", scope.setDateToDay);
         scope.eventBus.addListener("removeListener", scope.removeListener);
+        scope.eventBus.addListener("highLightDay", scope.highLightDay);
         $compile(element.contents())(scope);
     }
 });

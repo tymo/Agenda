@@ -58,9 +58,9 @@ angular.module("agenda").directive('agenda', function ($compile) {
             if (emptyCellCount != null) {
                 emptyCellCount = null;
             }
-            scope.monthGrid = '<tr><th class="tableArrow" ng-click="prevMonth()">\<<</th><th class="tableHeader" colspan="5">{{currentMonth}}\/{{currentYear}}</th><th class="tableArrow" ng-click="nextMonth()">\>></th></tr>\
-                <tr><th class=\'tableHeader\'>Dom</th><th class=\'tableHeader\'>Seg</th><th class=\'tableHeader\'>Ter</th><th class=\'tableHeader\'>Qua</th><th \n\
-                class=\'tableHeader\'>Qui</th><th class=\'tableHeader\'>Sex</th><th class=\'tableHeader\'>Sab</th></tr>';
+            scope.monthGrid = '<tr><th class="tableArrow" ng-click="prevMonth()">\<<</th><th class="agendaHeader" colspan="5">{{currentMonth}}\/{{currentYear}}</th><th class="tableArrow" ng-click="nextMonth()">\>></th></tr>\
+                <tr><th class=\'agendaHeader\'>Dom</th><th class=\'agendaHeader\'>Seg</th><th class=\'agendaHeader\'>Ter</th><th class=\'agendaHeader\'>Qua</th><th \n\
+                class=\'agendaHeader\'>Qui</th><th class=\'agendaHeader\'>Sex</th><th class=\'agendaHeader\'>Sab</th></tr>';
             scope.date = newDate;
             scope.monthIdx = scope.date.month();
             scope.currentYear = scope.date.year();
@@ -108,12 +108,16 @@ angular.module("agenda").directive('agenda', function ($compile) {
         }
         scope.checkForEvents = function (eventList) {
             for (var dayIdx = 1; dayIdx <= scope.nmontSizeh; dayIdx++) {
-                let day = moment().year(scope.currentYear).month(scope.monthIdx).date(dayIdx).format("DDMMYYYY");
-                if (day) {
-                    if (((eventList.filter(function (event) {
-                        return event.dateOfDay === day;
-                    })).length > 0)) {
-                        scope.highLightCell(day.date);
+                let dateOfDay = moment().year(scope.currentYear).month(scope.monthIdx).date(dayIdx).format("DDMMYYYY");
+                if (dateOfDay) {
+                    dayEventCount = (eventList.filter(function (event) {
+                        return event.dateOfDay === dateOfDay;
+                    })).length;
+//                    if (((eventList.filter(function (event) {
+//                        return event.dateOfDay === dateOfDay;
+//                    })).length > 0)) {
+                    if (dayEventCount > 0) {
+                        scope.eventBus.fireEvent("highLightDay", [dayIdx, dayEventCount]);
                     }
                 }
             }
@@ -148,14 +152,16 @@ angular.module("agenda").directive('agenda', function ($compile) {
             $(scope.element.find("td")[(dayOfMonth + emptyCellCount - 1)]).addClass('cellNoEvent');
         }
 
-        scope.nextMonth = function () {
-            scope.eventBus.fireEvent("removeListener");
-            scope.createMonth(scope.date.add(1, 'M'));
-        }
-
         scope.prevMonth = function () {
             scope.eventBus.fireEvent("removeListener");
             scope.createMonth(scope.date.subtract(1, 'M'));
+            scope.dayClick("010199999");
+        }
+
+        scope.nextMonth = function () {
+            scope.eventBus.fireEvent("removeListener");
+            scope.createMonth(scope.date.add(1, 'M'));
+            scope.dayClick("010199999");
         }
 
         scope.eventBus.addListener("highLightCell", scope.highLightCell);

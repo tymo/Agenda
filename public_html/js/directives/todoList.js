@@ -4,10 +4,9 @@ angular.module("agenda").directive('todoList', function () {
         link: link,
         template:
                 '<div ng-show="dayHasEvents(dateOfDay)">\
-                <table class="table">\
-                <tr><th  ng-class="\'selecionada\'"`>{{Title}}</th>\
-                <th ng-class="\'selecionada\'" colspan="6"></th></tr>\
-                <tr><th>Descrição</th><th>Hora</th><th>Excluir</th></tr>\
+                <table class="tableRoot">\
+                <tr class="agendaHeader"><th class="agendaHeader" colspan="6">{{Title}}</th></tr>\
+                <tr class="agendaHeader"><th class="agendaHeader">Descrição</th><th class="agendaHeader">Hora</th><th class="agendaHeader">Excluir</th></tr>\
                  <tr class="tr-todo-item" todo-Item event-bus="eventBus" event="event" store="store" \
                  ng-repeat="event in store.get(\'agendaEvents\') | filter: { dateOfDay: dateOfDay}"></tr></table>'
     };

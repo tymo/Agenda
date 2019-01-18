@@ -24,11 +24,18 @@
     border: solid 1px;
 }
 
-.tableHeader {
+.agendaHeader {
     font-size: 20px;
     border: solid 1px;
-    text-align: center;    
+    text-align: center; 
     background-color: lightskyblue;
+}
+
+.tableRoot {
+    font-size: 20px;
+    border: solid 1px;
+    width: 600px;
+    text-align: center;
 }
 
 .tableArrow {
@@ -43,6 +50,11 @@ td {
     border: solid 1px;
     width: 40px;
     height: 40px;
+}
+
+.selecionada {
+    border: solid 1px;
+    background-color: lightskyblue;
 }
 
 .cellIgnored {
