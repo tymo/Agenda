@@ -12,6 +12,22 @@ angular.module("agenda").directive('dayCell', function ($compile) {
         const EVENT = 2;
         const EVENTCOUNT = 1;
         scope.element = element;
+        scope.selectDay = function (dayOfMonth) {
+            if (scope.dayOfMonth === dayOfMonth) {
+                if (lastSelectedDay) {
+                    scope.unselectDay(lastSelectedDay);
+                }
+                $($(scope.element)).removeClass("cellNoEvent");
+                $($(scope.element)).addClass("cellSelected");
+                lastSelectedDay = dayOfMonth;
+            }
+        }
+        scope.unselectDay = function (dayOfMonth) {
+            if (scope.dayOfMonth === dayOfMonth) {
+                $($(scope.element)).removeClass("cellSelected");
+                $($(scope.element)).addClass("cellNoEvent");
+            }
+        }
         scope.highLightDay = function (params) {
             if (scope.dayOfMonth === params[DAYOFMONTH]) {
                 $($(scope.element)).removeClass('cellSelected');
@@ -27,22 +43,6 @@ angular.module("agenda").directive('dayCell', function ($compile) {
                 $($(scope.element)).removeClass('cellHasEvent');
                 $($(scope.element)).addClass('cellNoEvent');
                 scope.eventBus.fireEvent("hideCell", scope.dayOfMonth);
-            }
-        }
-        scope.selectDay = function (dayOfMonth) {
-            if (scope.dayOfMonth === dayOfMonth) {
-                if (lastSelectedDay) {
-                    scope.eventBus.fireEvent("unselectDay", lastSelectedDay);
-                }
-                $($(scope.element)).removeClass("cellNoEvent");
-                $($(scope.element)).addClass("cellSelected");
-                lastSelectedDay = dayOfMonth;
-            }
-        }
-        scope.unselectDay = function (dayOfMonth) {
-            if (scope.dayOfMonth === dayOfMonth) {
-                $($(scope.element)).removeClass("cellSelected");
-                $($(scope.element)).addClass("cellNoEvent");
             }
         }
         scope.setDateToDay = function (params) {

@@ -11,7 +11,7 @@ angular.module("agenda").directive('agenda', function ($compile) {
         const SUNDAY = 0;
         const SATURDAY = 6;
         scope.monthGrid = null;
-        
+
         const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
             "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
         ];
@@ -43,11 +43,11 @@ angular.module("agenda").directive('agenda', function ($compile) {
             scope.monthIdx = scope.date.month();
             scope.currentYear = scope.date.year();
             scope.currentMonth = monthNames[scope.monthIdx];
-            scope.nmontSizeh = scope.date.daysInMonth();
+            scope.currentMonthSize = scope.date.daysInMonth();
             var newDayCell = "";
 
             let fixed = false;
-            for (var dayIdx = 1; dayIdx <= scope.nmontSizeh; dayIdx++) {
+            for (var dayIdx = 1; dayIdx <= scope.currentMonthSize; dayIdx++) {
                 let day = scope.date.year(scope.currentYear).month(scope.monthIdx).date(dayIdx);
                 if (day.day() > 0 && !fixed) {
                     if (!emptyCellCount) {
@@ -75,28 +75,42 @@ angular.module("agenda").directive('agenda', function ($compile) {
                 angular.element(element).append(monthTable);
             }
             $compile(monthTable)(scope);
-            scope.eventBus.fireEvent("getEventList");
+            //scope.eventBus.fireEvent("getEventList");
+            scope.checkEventsInMonth();
         }
 
         if (!scope.element) {
             scope.element = element;
         }
         scope.checkForEvents = function (eventList) {
-            for (var dayIdx = 1; dayIdx <= scope.nmontSizeh; dayIdx++) {
+            for (var dayIdx = 1; dayIdx <= scope.currentMonthSize; dayIdx++) {
                 let dateOfDay = moment().year(scope.currentYear).month(scope.monthIdx).date(dayIdx).format("DDMMYYYY");
                 if (dateOfDay) {
                     dayEventCount = (eventList.filter(function (event) {
                         return event.dateOfDay === dateOfDay;
                     })).length;
-//                    if (((eventList.filter(function (event) {
-//                        return event.dateOfDay === dateOfDay;
-//                    })).length > 0)) {
                     if (dayEventCount > 0) {
                         scope.eventBus.fireEvent("highLightDay", [dayIdx, dayEventCount]);
                     }
                 }
             }
         }
+        scope.checkEventsInMonth = function () {
+            datesOfMomth = [];
+            for (var dayIdx = 1; dayIdx <= scope.currentMonthSize; dayIdx++) {
+                let dateOfDay = moment().year(scope.currentYear).month(scope.monthIdx).date(dayIdx).format("DDMMYYYY");
+                if (dateOfDay) {
+                    let newDay = {
+                        dayOfMonth: dayIdx,
+                        dateOfDay: dateOfDay
+                    }
+                    datesOfMomth.push(angular.copy(newDay));
+                }
+            }
+            scope.eventBus.fireEvent("highLightDaysWithEvents", datesOfMomth);
+            delete datesOfMomth;
+        }
+
         scope.dayClick = function (dayOfMonth) {
             scope.eventBus.fireEvent("setDayOfMonth", angular.copy(dayOfMonth));
             newDate = angular.copy(moment().year(scope.currentYear).month(scope.monthIdx).date(dayOfMonth));

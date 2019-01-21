@@ -65,10 +65,24 @@ angular.module("agenda").directive('todoList', function () {
             }
             return false
         };
+        scope.dayEventCount = function (dateOfDay) {
+            if (dateOfDay) {
+                return (scope.store.get('agendaEvents').filter(function (event) {
+                    return event.dateOfDay === dateOfDay;
+                })).length;
+            }
+        };
         scope.getEventList = function () {
             if (scope.store.get('agendaEvents').length > 0) {
                 scope.eventBus.fireEvent("checkForEvents", scope.store.get('agendaEvents'));
             }
+        };
+        scope.highLightDaysWithEvents = function (datesOfMonth) {
+            datesOfMonth.forEach(function (currDate) {
+                if (scope.dayHasEvents(currDate.dateOfDay)) {
+                    scope.eventBus.fireEvent("highLightDay", [currDate.dayOfMonth, scope.dayEventCount(currDate.dateOfDay)]);
+                }
+            })
         };
         scope.store.set("agendaEvents", []);
         scope.eventBus.addListener("insertEvent", scope.insertEvent);
@@ -76,7 +90,9 @@ angular.module("agenda").directive('todoList', function () {
         scope.eventBus.addListener("setDayOfMonth", scope.setDayOfMonth);
         scope.eventBus.addListener("setDateOfDay", scope.setDateOfDay);
         scope.eventBus.addListener("getEventList", scope.getEventList);
-    };
+        scope.eventBus.addListener("highLightDaysWithEvents", scope.highLightDaysWithEvents);
+    }
+    ;
 }
 
 );
