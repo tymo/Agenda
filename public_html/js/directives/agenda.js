@@ -131,9 +131,9 @@ angular.module("agenda").directive('agenda', function ($compile) {
         }
 
         scope.highLightCell = function (dayOfMonth) {
-            $(scope.element.find("td")[(dayOfMonth + emptyCellCount - 1)]).removeClass('cellSelected');
-            $(scope.element.find("td")[(dayOfMonth + emptyCellCount - 1)]).addClass('cellHasEvent');
-            //$(scope.element.find("td")[(dayOfMonth + emptyCellCount - 1)]).toggleClass('cellHasEvent');
+//            $(scope.element.find("td")[(dayOfMonth + emptyCellCount - 1)]).removeClass('cellSelected');
+//            $(scope.element.find("td")[(dayOfMonth + emptyCellCount - 1)]).addClass('cellHasEvent');
+            $(scope.element.find("td")[(dayOfMonth + emptyCellCount - 1)]).toggleClass('cellHasEvent');
         }
 
         scope.hideCell = function (dayOfMonth) {
@@ -150,7 +150,7 @@ angular.module("agenda").directive('agenda', function ($compile) {
         scope.nextMonth = function () {
             scope.eventBus.fireEvent("removeListener");
             scope.createMonth(scope.date.add(1, 'M'));
-            scope.dayClick("010199999");
+            scope.dayClick("01011747");
         }
 
         scope.eventBus.addListener("highLightCell", scope.highLightCell);

@@ -2,7 +2,8 @@ angular.module("agenda").directive('dayCell', function ($compile) {
     return {
         scope: {eventBus: "=", dayOfMonth: "=", dateOfDay: "="},
         link: link,
-        template: '{{dayOfMonth}}'
+        replace: true,
+        template: '<div width:100% height:100% >{{dayOfMonth}}</div>'
     };
 
     var lastSelectedDay = null;
@@ -15,7 +16,7 @@ angular.module("agenda").directive('dayCell', function ($compile) {
         scope.selectDay = function (dayOfMonth) {
             if (scope.dayOfMonth === dayOfMonth) {
                 if (lastSelectedDay) {
-                    scope.unselectDay(lastSelectedDay);
+                    scope.eventBus.fireEvent("unselectDay", lastSelectedDay);
                 }
                 $($(scope.element)).removeClass("cellNoEvent");
                 $($(scope.element)).addClass("cellSelected");
