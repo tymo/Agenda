@@ -15,15 +15,45 @@
 
         <script src="js/directives/todoItem.js"></script>
         <script src="js/directives/todoList.js"></script>        
-        <script src="js/directives/itemInput.js"></script>        
+        <script src="js/directives/todoInput.js"></script>
+        <!--Tabs--> 
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="/resources/demos/style.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+            $(function () {
+                $("#tabs").tabs();
+            });
+        </script>  
+        <!--Tabs--> 
     </head>
     <body ng-controller="agendaCtrl">
-        <div class="jumbotron">
-            <h3>{{app}}</h3>            
-            <agenda event-bus="eventBus"></agenda>  
-            <div>
-                <todo-List event-bus="eventBus"></todo-list>                
-                <item-Input event-bus="eventBus"></item-input>
+        <!--        <div class="jumbotron">
+                    <h3>{{app}}</h3>            
+                    <agenda event-bus="eventBus"></agenda>  
+                    <div>
+                        <todo-List event-bus="eventBus"></todo-list>                
+                        <todo-Input event-bus="eventBus"></todo-input>
+                    </div>
+                </div>-->        
+        <div id="tabs">
+            <ul>
+                <li><a href="#tabs-1">Agenda</a></li>
+                <li><a href="#tabs-2">Cadastro</a></li>
+            </ul>
+            <div id="tabs-1">
+                <div class="jumbotron">
+                    <h3>{{app}}</h3>            
+                    <agenda event-bus="eventBus"></agenda>  
+                    <div>
+                        <todo-List event-bus="eventBus"></todo-list>                
+                        <todo-Input event-bus="eventBus"></todo-input>
+                    </div>
+                </div>
+            </div>
+            <div id="tabs-2">
+                <p>Content 2</p>
             </div>
         </div>
     </body>

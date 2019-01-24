@@ -1,4 +1,4 @@
-angular.module("agenda").directive('itemInput', function ($compile) {
+angular.module("agenda").directive('todoInput', function ($compile) {
     return {
         scope: {
             eventBus: "="},
