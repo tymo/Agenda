@@ -1,6 +1,6 @@
 angular.module("agenda").directive('todoItem', function () {
     return {
-        scope: {eventBus: "=", event: "=", store: "="},
+        scope: {eventBus: "=", event: "="},
         link: link,
         template:
        '<td>{{event.description}}</td>\

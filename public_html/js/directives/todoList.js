@@ -7,7 +7,7 @@ angular.module("agenda").directive('todoList', function () {
                 <table class="tableRoot">\
                 <tr class="agendaHeader"><th class="agendaHeader" colspan="6">{{Title}}</th></tr>\
                 <tr class="agendaHeader"><th class="agendaHeader">Descrição</th><th class="agendaHeader">Hora</th><th class="agendaHeader">Excluir</th></tr>\
-                 <tr class="tr-todo-item" todo-Item event-bus="eventBus" event="event" store="store" \
+                 <tr class="tr-todo-item" todo-Item event-bus="eventBus" event="event"\
                  ng-repeat="event in store.get(\'agendaEvents\') | filter: { dateOfDay: dateOfDay}"></tr></table>'
     };
     function link(scope, element) {

@@ -17,6 +17,8 @@
         <script src="js/directives/todoList.js"></script>        
         <script src="js/directives/todoInput.js"></script>
 
+        <script src="js/directives/patientItem.js"></script>
+        <script src="js/directives/patientList.js"></script>        
         <script src="js/directives/patientInput.js"></script>
 
         <!--Tabs-->
@@ -31,15 +33,7 @@
         </script>  
         <!--Tabs--> 
     </head>
-    <body ng-controller="agendaCtrl">
-        <!--        <div class="jumbotron">
-                    <h3>{{app}}</h3>            
-                    <agenda event-bus="eventBus"></agenda>  
-                    <div>
-                        <todo-List event-bus="eventBus"></todo-list>                
-                        <todo-Input event-bus="eventBus"></todo-input>
-                    </div>
-                </div>-->        
+    <body ng-controller="agendaCtrl">             
         <div id="tabs">
             <ul>
                 <li><a href="#tabs-1">Agenda</a></li>
@@ -57,6 +51,7 @@
             </div>
             <div id="tabs-2">
                 <patient-input event-bus="eventBus"></patient-input>
+                <patient-List event-bus="eventBus"></patient-list>                                
             </div>
         </div>
     </body>
