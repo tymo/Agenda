@@ -5,26 +5,28 @@ angular.module("agenda").directive('patientInput', function ($compile) {
         link: link,
         template:
                 '<form name="patientForm">\
-                <input type="text" name="name" ng-model="patient.name" placeholder="Nome" class="textInput"/>\
+                <input class="form-control" type="text" ng-model="patient.name" name="name" placeholder="Nome" ng-required="true"/>\
+                <input class="form-control" type="text" ng-model="patient.data" name="data" placeholder="Data de nascimento" ui-date/>\
+                <input class="form-control" type="text" ng-model="patient.telefone" name="telefone" placeholder="Telefone"/>\
+                <input class="form-control" type="text" ng-model="patient.endereco.cidade" name="cidade" placeholder="Cidade" />\
+                <input class="form-control" type="text" ng-model="patient.endereco.bairro" name="bairro" placeholder="Baurro" />\
+                <input class="form-control" type="text" ng-model="patient.endereco.rua" name="rua" placeholder="Rua" />\
+                <input class="form-control" type="text" ng-model="patient.endereco.numero" name="numero" placeholder="Número"/>\
                 <button class="addButton" name="sendButton" ng-click="addPatient(patient)">Adicionar</button>\
-        </form>\
-        <div ng-show="dayNotSelected" class="alert alert-danger">\
-          Por favor, primeiro selecione um dia do mês.!\
-        </div>\
-        <div ng-show="nameIsBlank" class="alert alert-danger">\
-          Por favor, preencha o campo nome!\
-        </div>'
+        </form>'
     };
     function link(scope, element) {
         scope.element = element;
         scope.addPatient = function (patient) {
             if (patient) {
                 scope.nameIsBlank = !patient.name;
-                if (patient.name) {
+                if (!scope.nameIsBlank) {
                     scope.eventBus.fireEvent("insertPatient", angular.copy(patient));
-                }
-                delete scope.patient;
+                }                
+            } else {
+                scope.nameIsBlank = true;
             }
+            delete scope.patient;
         };
     }
 });

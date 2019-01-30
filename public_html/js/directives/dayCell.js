@@ -64,6 +64,7 @@ angular.module("agenda").directive('dayCell', function ($compile) {
             if (scope.dayOfMonth === params[DAYOFMONTH] && params[EVENT]) {
                 params[EVENT].dateOfDay = angular.copy(params[DATEOFDAY]);
                 params[EVENT].dayOfMonth = angular.copy(params[DAYOFMONTH]);
+                //params[EVENT].patient = angular.copy(params[EVENT].patient.name);
                 scope.eventBus.fireEvent("insertEvent", angular.copy(params[EVENT]));
                 eventCount++;
                 if (eventCount === 1) {

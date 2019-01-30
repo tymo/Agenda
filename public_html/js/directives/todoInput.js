@@ -1,42 +1,22 @@
 angular.module("agenda").directive('todoInput', function ($compile) {
     return {
-        scope: {
-            eventBus: "="},
+        scope: {eventBus: "="},
         link: link,
         template:
-                '<form name="eventForm">\
+                '<form name="eventForm" >\
+        <select class="form-control" ng-model="event.patient" ng-options="patient.name for patient in patientList">\
+            <option value="">Selecione um paciente</option>\
+        </select>\
+        <input class="form-control" type="text" name="hour" ng-model="event.hour" placeHolder="Hora" ui-time >\
         <button class="addButton" name="sendButton" ng-click="addEvent(event)">Adicionar</button>\
         </form>\
         <div ng-show="dayNotSelected" class="alert alert-danger">\
-          Por favor, primeiro selecione um dia do mês.!\
+          Por favor, primeiro selecione um dia do mês!\
         </div>\
-        <div ng-show="descriptionIsBlank" class="alert alert-danger">\
-          Por favor, preencha o campo descrição!\
-        </div>\
-        <div ng-show="hourIsBlank" class="alert alert-danger">\
-          Por favor, preencha o campo hora!\
         </div>'
     };
-    //var dayOfMonth = null;
     function link(scope, element) {
-        cps = [
-            {type: 'TXT', content: '<input type="text" name="<name>" ng-model="<model>" placeholder="<placeholder>" class="textInput"/>'},
-        ]
-        inputs = [
-            {type: 'TXT', name: 'description', model: 'event.description', placeholder: 'Descrição do Evento'},
-            {type: 'TXT', name: 'hour', model: 'event.hour', placeholder: 'Hora'}
-        ];
-        line = "";
-        cont = "";
-        inputs.forEach(function (input) {
-            line = cps.filter(function (cp) {
-                return cp.type === input.type;
-            })[0].content;
-            line = line.replace('<name>', input.name).replace('<model>', input.model).replace('<placeholder>', input.placeholder);
-            cont += line;
-        });
-        angular.element(element).find("form").prepend(cont);
-        $compile(element.contents())(scope);
+        scope.element = element;
         scope.setDayOfMonth = function (dayOfMonth) {
             scope.dayOfMonth = angular.copy(dayOfMonth);
             scope.dayNotSelected = !scope.dayOfMonth;
@@ -45,21 +25,27 @@ angular.module("agenda").directive('todoInput', function ($compile) {
         scope.setDateOfDay = function (selDate) {
             scope.dateOfDay = angular.copy(selDate.format("DDMMYYYY"));
         }
+        scope.setPatientList = function (patientList) {
+            if (!scope.patientList) {
+                scope.patientList = patientList;
+            }
+        }
         scope.addEvent = function (event) {
             scope.dayNotSelected = !scope.dayOfMonth;
             if (event) {
-                scope.descriptionIsBlank = !event.description;
+                scope.patientIsBlank = !event.patient.name;
                 scope.hourIsBlank = !event.hour;
-                if (!scope.hourIsBlank) {
-                    if (event.description && event.hour) {
-                        scope.eventBus.fireEvent("addEvent", [scope.dayOfMonth, scope.dateOfDay, angular.copy(event)]);                        
-                    }
+                if (!scope.hourIsBlank && !scope.patientIsBlank) {
+                    scope.eventBus.fireEvent("addEvent", [scope.dayOfMonth, scope.dateOfDay, angular.copy(event)]);
                     delete scope.event;
                 }
             }
-        };
+        }
+
+        scope.patientList = null;
         scope.eventBus.addListener("setDayOfMonth", scope.setDayOfMonth);
         scope.eventBus.addListener("setDateOfDay", scope.setDateOfDay);
-        
+        scope.eventBus.addListener("setPatientList", scope.setPatientList);
     }
+    ;
 });

@@ -6,9 +6,17 @@ angular.module("agenda").directive('patientList', function () {
                 '<div ng-show="hasPatients()">\
                 <table class="tableRoot">\
                 <tr class="agendaHeader"><th class="agendaHeader" colspan="6">Pacientes</th></tr>\
-                <tr class="agendaHeader"><th class="agendaHeader">Nome</th><th class="agendaHeader">Excluir</th></tr>\
-                 <tr class="tr-patient-item" patient-Item event-bus="eventBus" patient="patient" \
-                 ng-repeat="patient in store.get(\'patientList\')"></tr></table>'
+                <tr class="agendaHeader">\
+                <th class="agendaHeader">Nome</th>\
+                <th class="agendaHeader">Nascimento</th>\
+                <th class="agendaHeader">Telofone</th>\
+                <th class="agendaHeader">Cidade</th>\
+                <th class="agendaHeader">Bairro</th>\
+                <th class="agendaHeader">Rua</th>\
+                <th class="agendaHeader">Número</th>\
+                <th class="agendaHeader">Excluir</th></tr>\
+                <tr class="tr-patient-item" patient-Item event-bus="eventBus" patient="patient" \
+                ng-repeat="patient in store.get(\'patientList\')"></tr></table>'
     };
     function link(scope, element) {
         class Store {
@@ -39,24 +47,24 @@ angular.module("agenda").directive('patientList', function () {
         scope.insertPatient = function (patient) {
             if (!scope.store.get('patientList').includes(patient)) {
                 scope.store.get('patientList').push(angular.copy(patient));
+                scope.eventBus.fireEvent("setPatientList", scope.store.get('patientList'));
             }
             delete patient;
         }
         scope.deletePatient = function (patient) {
             if (scope.store.get('patientList').includes(patient)) {
-                delete scope.store.get('patientList').splice(scope.store.get('patientList').indexOf(patient), 1);
+                delete scope.store.get('patientList').splice(scope.store.get('patientList').indexOf(patient), 1)
+                ;
+                if (scope.store.get('patientList').length > 0) {
+                    scope.eventBus.fireEvent("setPatientList", scope.store.get('patientList'));
+                }
             }
             delete patient;
         }
         scope.hasPatients = function () {
             return (scope.store.get('patientList').length > 0);
         };
-
-        scope.getPatientList = function () {
-            if (scope.store.get('patientList').length > 0) {
-                scope.eventBus.firePatient("setPatientList", scope.store.get('patientList'));
-            }
-        };
+        
         scope.store.set("patientList", []);
         scope.eventBus.addListener("insertPatient", scope.insertPatient);
         scope.eventBus.addListener("deletePatient", scope.deletePatient);
