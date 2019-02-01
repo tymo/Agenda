@@ -5,7 +5,7 @@ angular.module("agenda").directive('patientInput', function ($compile) {
         link: link,
         template:
                 '<form name="patientForm">\
-                <input class="form-control" type="text" ng-model="patient.name" name="name" placeholder="Nome" ng-required="true"/>\
+                <input class="form-control" type="text" ng-model="patient.name" name="name" placeholder="Nome"/>\
                 <input class="form-control" type="text" ng-model="patient.data" name="data" placeholder="Data de nascimento" ui-date/>\
                 <input class="form-control" type="text" ng-model="patient.telefone" name="telefone" placeholder="Telefone"/>\
                 <input class="form-control" type="text" ng-model="patient.endereco.cidade" name="cidade" placeholder="Cidade" />\
@@ -21,7 +21,7 @@ angular.module("agenda").directive('patientInput', function ($compile) {
             if (patient) {
                 scope.nameIsBlank = !patient.name;
                 if (!scope.nameIsBlank) {
-                    scope.eventBus.fireEvent("insertPatient", angular.copy(patient));
+                    scope.eventBus.fireEvent("insert_patient", angular.copy(patient));
                 }                
             } else {
                 scope.nameIsBlank = true;

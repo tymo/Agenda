@@ -36,9 +36,9 @@ angular.module("agenda").directive('agenda', function ($compile) {
             if (emptyCellCount != null) {
                 emptyCellCount = null;
             }
-            scope.monthGrid = '<tr><th class="tableArrow" ng-click="prevMonth()">\<<</th><th class="agendaHeader" colspan="5">{{currentMonth}}\/{{currentYear}}</th><th class="tableArrow" ng-click="nextMonth()">\>></th></tr>\
-                <tr><th class=\'agendaHeader\'>Dom</th><th class=\'agendaHeader\'>Seg</th><th class=\'agendaHeader\'>Ter</th><th class=\'agendaHeader\'>Qua</th><th \n\
-                class=\'agendaHeader\'>Qui</th><th class=\'agendaHeader\'>Sex</th><th class=\'agendaHeader\'>Sab</th></tr>';
+            scope.monthGrid = '<tr><th class="tableArrow" ng-click="prevMonth()">\<<</th><th class="listHeader" colspan="5">{{currentMonth}}\/{{currentYear}}</th><th class="tableArrow" ng-click="nextMonth()">\>></th></tr>\
+                <tr><th class=\'listHeader\'>Dom</th><th class=\'listHeader\'>Seg</th><th class=\'listHeader\'>Ter</th><th class=\'listHeader\'>Qua</th><th \n\
+                class=\'listHeader\'>Qui</th><th class=\'listHeader\'>Sex</th><th class=\'listHeader\'>Sab</th></tr>';
             scope.date = newDate;
             scope.monthIdx = scope.date.month();
             scope.currentYear = scope.date.year();

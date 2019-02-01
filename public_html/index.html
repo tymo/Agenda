@@ -14,23 +14,29 @@
         <script src="js/directives/uiDateDirective.js"></script> 
         <script src="js/directives/uiTimeDirective.js"></script> 
 
-        <script src="js/directives/todoItem.js"></script>
-        <script src="js/directives/todoList.js"></script>        
         <script src="js/directives/todoInput.js"></script>
+        <script src="js/directives/todoList.js"></script>                
+        <script src="js/directives/todoItem.js"></script>
 
-        <script src="js/directives/patientItem.js"></script>
-        <script src="js/directives/patientList.js"></script>        
         <script src="js/directives/patientInput.js"></script>
+        <script src="js/directives/patientList.js"></script>                
+        <script src="js/directives/patientItem.js"></script>
+
+        <script src="js/directives/doctorInput.js"></script>
+        <script src="js/directives/doctorList.js"></script>                
+        <script src="js/directives/doctorItem.js"></script>
+
+        <!--<script src="js/directives/inputBuilder.js"></script>-->
 
         <!--Tabs-->
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-        <link rel="stylesheet" href="/resources/demos/style.css">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">        
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script>
             $(function () {
                 $("#tabs").tabs();
             });
+
         </script>  
         <!--Tabs--> 
     </head>
@@ -38,21 +44,28 @@
         <div id="tabs">
             <ul>
                 <li><a href="#tabs-1">Agenda</a></li>
-                <li><a href="#tabs-2">Cadastro</a></li>
+                <li><a href="#tabs-2">Pacientes</a></li>
+                <li><a href="#tabs-3">Medicos</a></li>
             </ul>
             <div id="tabs-1">
                 <div class="jumbotron">
                     <h3>{{app}}</h3>            
                     <agenda event-bus="eventBus"></agenda>  
-                    <div>
-                        <todo-List event-bus="eventBus"></todo-list>                
+                    <div>                        
                         <todo-Input event-bus="eventBus"></todo-input>
+                        <todo-list event-bus="eventBus"></todo-list>                
                     </div>
                 </div>
             </div>
             <div id="tabs-2">
+                <!--<input-builder insert-listener="insert_patient", input-fields="patientInputFields", object-name="patient"></input-builder>-->
                 <patient-input event-bus="eventBus"></patient-input>
-                <patient-List event-bus="eventBus"></patient-list>                                
+                <patient-list event-bus="eventBus"></patient-list>                                
+            </div>
+            <div id="tabs-3">
+                <!--<input-builder insert-listener="insert_patient", input-fields="patientInputFields", object-name="patient"></input-builder>-->
+                <doctor-input event-bus="eventBus"></doctor-input>
+                <doctor-list event-bus="eventBus"></doctor-list>                                
             </div>
         </div>
     </body>

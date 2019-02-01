@@ -1,6 +1,7 @@
 angular.module("agenda", []);
 angular.module("agenda").controller("agendaCtrl", function ($scope) {
     $scope.app = "Agenda";
+
     $scope.listeners = {};
     var listeners = [];
     $scope.eventBus = {
@@ -32,4 +33,8 @@ angular.module("agenda").controller("agendaCtrl", function ($scope) {
             });
         },
     }
+    $scope.patientInputFields = [
+        {type: 'TXT', name: 'name', model: 'patient.name', placeholder: 'Nome'}
+//        {type: 'BTP'}
+    ];
 });

@@ -4,6 +4,7 @@ angular.module("agenda").directive('todoItem', function () {
         link: link,
         template:
        '<td>{{event.patient.name}}</td>\
+        <td>{{event.doctor.name}}</td>\
         <td>{{event.hour| date:\'HH:mm\'}}</td>\
         <td><button class="removeButton" ng-click="removeEvent(event)">X</button></td>'
     };

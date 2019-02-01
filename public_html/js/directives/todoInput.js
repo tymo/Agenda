@@ -7,6 +7,9 @@ angular.module("agenda").directive('todoInput', function ($compile) {
         <select class="form-control" ng-model="event.patient" ng-options="patient.name for patient in patientList">\
             <option value="">Selecione um paciente</option>\
         </select>\
+        <select class="form-control" ng-model="event.doctor" ng-options="doctor.name for doctor in doctorList">\
+            <option value="">Selecione um medico</option>\
+        </select>\
         <input class="form-control" type="text" name="hour" ng-model="event.hour" placeHolder="Hora" ui-time >\
         <button class="addButton" name="sendButton" ng-click="addEvent(event)">Adicionar</button>\
         </form>\
@@ -30,6 +33,11 @@ angular.module("agenda").directive('todoInput', function ($compile) {
                 scope.patientList = patientList;
             }
         }
+        scope.setDoctorList = function (doctorList) {
+            if (!scope.doctorList) {
+                scope.doctorList = doctorList;
+            }
+        }
         scope.addEvent = function (event) {
             scope.dayNotSelected = !scope.dayOfMonth;
             if (event) {
@@ -46,6 +54,7 @@ angular.module("agenda").directive('todoInput', function ($compile) {
         scope.eventBus.addListener("setDayOfMonth", scope.setDayOfMonth);
         scope.eventBus.addListener("setDateOfDay", scope.setDateOfDay);
         scope.eventBus.addListener("setPatientList", scope.setPatientList);
+        scope.eventBus.addListener("setDoctorList", scope.setDoctorList);
     }
     ;
 });

@@ -5,9 +5,9 @@ angular.module("agenda").directive('todoList', function () {
         template:
                 '<div ng-show="dayHasEvents(dateOfDay)">\
                 <table class="tableRoot">\
-                <tr class="agendaHeader"><th class="agendaHeader" colspan="6">{{Title}}</th></tr>\
-                <tr class="agendaHeader"><th class="agendaHeader">Paciente</th><th class="agendaHeader">Hora</th><th class="agendaHeader">Excluir</th></tr>\
-                 <tr class="tr-todo-item" todo-Item event-bus="eventBus" event="event"\
+                <tr class="listHeader"><th class="listHeader" colspan="7">{{Title}}</th></tr>\
+                <tr class="listHeader"><th class="listHeader">Paciente</th><th class="listHeader">Medico</th><th class="listHeader">Hora</th><th class="listHeader">Excluir</th></tr>\
+                <tr class="tr-todo-item" todo-Item event-bus="eventBus" event="event"\
                  ng-repeat="event in store.get(\'agendaEvents\') | filter: { dateOfDay: dateOfDay}"></tr></table>'
     };
     function link(scope, element) {
@@ -46,8 +46,8 @@ angular.module("agenda").directive('todoList', function () {
             if (scope.store.get('agendaEvents').includes(event)) {
                 delete scope.store.get('agendaEvents').splice(scope.store.get('agendaEvents').indexOf(event), 1)
                 ;
-                delete event;
             }
+            delete event;
         }
         scope.setDayOfMonth = function (newDay) {
             scope.dayOfMonth = angular.copy(newDay);
