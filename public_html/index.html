@@ -26,7 +26,7 @@
         <script src="js/directives/doctorList.js"></script>                
         <script src="js/directives/doctorItem.js"></script>
 
-        <!--<script src="js/directives/inputBuilder.js"></script>-->
+        <script src="js/directives/inputBuilder.js"></script>
 
         <!--Tabs-->
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">        
@@ -58,12 +58,12 @@
                 </div>
             </div>
             <div id="tabs-2">
-                <!--<input-builder insert-listener="insert_patient", input-fields="patientInputFields", object-name="patient"></input-builder>-->
+                <!--<input-builder event-bus="eventBus", insert-listener="insert_patient", input-fields="patientInputFields", object-name="patient"></input-builder>-->
                 <patient-input event-bus="eventBus"></patient-input>
                 <patient-list event-bus="eventBus"></patient-list>                                
             </div>
             <div id="tabs-3">
-                <!--<input-builder insert-listener="insert_patient", input-fields="patientInputFields", object-name="patient"></input-builder>-->
+                <!--<input-builder event-bus="eventBus", insert-listener="insertDoctor", input-fields="doctorInputFields", object-name="doctor"></input-builder>-->
                 <doctor-input event-bus="eventBus"></doctor-input>
                 <doctor-list event-bus="eventBus"></doctor-list>                                
             </div>

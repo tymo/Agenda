@@ -33,8 +33,16 @@ angular.module("agenda").controller("agendaCtrl", function ($scope) {
             });
         },
     }
+    
     $scope.patientInputFields = [
-        {type: 'TXT', name: 'name', model: 'patient.name', placeholder: 'Nome'}
-//        {type: 'BTP'}
+        {type: 'TXT', name: 'name', model: 'patient.name', placeholder: 'Nome'},        
+//        {type: 'BTN', listener: 'insert-patient', objectname:'patient'}
+        {type: 'BTP'}
     ];
+
+    $scope.doctorInputFields = [
+        {type: 'TXT', name: 'name', model: 'doctor.name', placeholder: 'Nome'},
+        {type: 'BTN', listener: 'insert-doctor', objectname:'doctor'}
+    ];
+
 });
