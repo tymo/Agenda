@@ -59,12 +59,14 @@
             </div>
             <div id="tabs-2">
                 <!--<input-builder event-bus="eventBus", insert-listener="insert_patient", input-fields="patientInputFields", object-name="patient"></input-builder>-->
-                <patient-input event-bus="eventBus"></patient-input>
+                <input-builder event-bus="eventBus", input-fields="patientInputFields"></input-builder>
+                <!--<patient-input event-bus="eventBus"></patient-input>-->
                 <patient-list event-bus="eventBus"></patient-list>                                
             </div>
             <div id="tabs-3">
                 <!--<input-builder event-bus="eventBus", insert-listener="insertDoctor", input-fields="doctorInputFields", object-name="doctor"></input-builder>-->
-                <doctor-input event-bus="eventBus"></doctor-input>
+                <input-builder event-bus="eventBus", input-fields="doctorInputFields"></input-builder>
+                <!--<doctor-input event-bus="eventBus"></doctor-input>-->
                 <doctor-list event-bus="eventBus"></doctor-list>                                
             </div>
         </div>

@@ -5,7 +5,7 @@ angular.module("agenda").directive('patientList', function () {
         template:
                 '<div ng-show="hasPatients()">\
                 <table class="tableRoot">\
-                <tr class="listHeader"><th class="listHeader" colspan="6">Pacientes</th></tr>\
+                <tr class="listHeader"><th class="listHeader" colspan="8">Pacientes</th></tr>\
                 <tr class="listHeader">\
                 <th class="listHeader">Nome</th>\
                 <th class="listHeader">Nascimento</th>\
