@@ -40,7 +40,7 @@ angular.module("agenda").directive('todoInput', function ($compile) {
         }
         scope.addEvent = function (event) {
             scope.dayNotSelected = !scope.dayOfMonth;
-            if (event) {
+            if (event && !scope.dayNotSelected) {
                 scope.patientIsBlank = !event.patient.name;
                 scope.hourIsBlank = !event.hour;
                 if (!scope.hourIsBlank && !scope.patientIsBlank) {
@@ -55,6 +55,5 @@ angular.module("agenda").directive('todoInput', function ($compile) {
         scope.eventBus.addListener("setDateOfDay", scope.setDateOfDay);
         scope.eventBus.addListener("setPatientList", scope.setPatientList);
         scope.eventBus.addListener("setDoctorList", scope.setDoctorList);
-    }
-    ;
+    };
 });

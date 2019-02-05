@@ -36,19 +36,20 @@ angular.module("agenda").controller("agendaCtrl", function ($scope) {
 
     $scope.patientInputFields = [
         {type: 'TXT', name: 'name', model: 'patient.name', placeholder: 'Nome'},
-        {type: 'TXT', name: 'telefone', model: 'patient.telefone', placeholder: 'Telefone'},
-        {type: 'TXT', name: 'cidade', model: 'patient.cidade', placeholder: 'Cidade'},
-        {type: 'TXT', name: 'bairro', model: 'patient.bairro', placeholder: 'Bairro'},
-        {type: 'TXT', name: 'rua', model: 'patient.rua', placeholder: 'Rua'},
-        {type: 'TXT', name: 'numero', model: 'patient.numero', placeholder: 'Numero'},
-//        {type: 'BTN', listener: 'insert-patient', objectname:'patient'}
-        {type: 'BTP'}
+        {type: 'TXD', name: 'birthdate', model: 'patient.birthdate', placeholder: 'Data nascimento'},
+        {type: 'TXT', name: 'phonenumber', model: 'patient.phonenumber', placeholder: 'Telefone'},
+        {type: 'TXT', name: 'city', model: 'patient.address.city', placeholder: 'Cidade'},
+        {type: 'TXT', name: 'neighborhood', model: 'patient.address.neighborhood', placeholder: 'Bairro'},                
+        {type: 'TXT', name: 'street', model: 'patient.address.street', placeholder: 'Rua'},                
+        {type: 'TXT', name: 'number', model: 'patient.address.number', placeholder: 'Número'},                        
+        {type: 'BTN', listener: 'insertPatient', dataObject: 'patient'}
+//        {type: 'BTP'}
     ];
 
     $scope.doctorInputFields = [
         {type: 'TXT', name: 'name', model: 'doctor.name', placeholder: 'Nome'},
-//        {type: 'BTN', listener: 'insertDoctor', objectname:'doctor'}
-        {type: 'BTD'}
+        {type: 'BTN', listener: 'insertDoctor', dataObject: 'doctor'}
+//        {type: 'BTD'}
     ];
 
 });

@@ -44,7 +44,7 @@ angular.module("agenda").directive('patientList', function () {
 
         scope.element = element;
         scope.store = new Store();
-        scope.insert_patient = function (patient) {
+        scope.insertPatient = function (patient) {
             if (!scope.store.get('patientList').includes(patient)) {
                 scope.store.get('patientList').push(angular.copy(patient));
 //                scope.eventBus.fireEvent("setPatientList", scope.store.get('patientList'));
@@ -67,7 +67,7 @@ angular.module("agenda").directive('patientList', function () {
 
         scope.store.set("patientList", []);
         scope.eventBus.fireEvent("setPatientList", scope.store.get('patientList'));
-        scope.eventBus.addListener("insert_patient", scope.insert_patient);
+        scope.eventBus.addListener("insertPatient", scope.insertPatient);
         scope.eventBus.addListener("deletePatient", scope.deletePatient);
         scope.eventBus.addListener("getPatientList", scope.getPatientList);
     };

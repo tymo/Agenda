@@ -21,7 +21,7 @@ angular.module("agenda").directive('patientInput', function ($compile) {
             if (patient) {
                 scope.nameIsBlank = !patient.name;
                 if (!scope.nameIsBlank) {
-                    scope.eventBus.fireEvent("insert_patient", angular.copy(patient));
+                    scope.eventBus.fireEvent("insertPatient", angular.copy(patient));
                 }                
             } else {
                 scope.nameIsBlank = true;
